@@ -9,9 +9,9 @@ import setuptools
 
 AUTHOR = "Jakrin Juangbhanich"
 EMAIL = "juangbhanich.k@gmail.com"
-PACKAGE_NAME = "k_package"
-DESCRIPTION = "Package Description."
-REPO = "package_repo_url"
+PACKAGE_NAME = "k_vision"
+DESCRIPTION = "Computer Vision tools and utility scripts."
+REPO = "https://github.com/krinj/k-vision"
 
 # ======================================================================================================================
 # Automatic Package Setup Script.
@@ -62,6 +62,13 @@ setuptools.setup(
     url=REPO,
     packages=find_packages_under(PACKAGE_NAME),
     package_dir={PACKAGE_NAME: PACKAGE_NAME},
+    package_data={PACKAGE_NAME: [f'{PACKAGE_NAME}/fonts/*.ttf']},
+    install_requires=[
+        "k-util",
+        "numpy",
+        "opencv-python",
+        "pillow"
+    ],
     classifiers=[
         "Programming Language :: Python :: 3.6"
     ],
