@@ -10,7 +10,7 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - coverage run --source k_package -m unittest tests/test_*.py
+  - coverage run --source k_vision -m unittest tests/test_*.py
 
 after_success:
   - codecov
