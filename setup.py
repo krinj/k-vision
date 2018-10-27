@@ -62,7 +62,7 @@ setuptools.setup(
     url=REPO,
     packages=find_packages_under(PACKAGE_NAME),
     package_dir={PACKAGE_NAME: PACKAGE_NAME},
-    package_data={PACKAGE_NAME: [f'{PACKAGE_NAME}/fonts/*.ttf']},
+    package_data={PACKAGE_NAME: [f'fonts/*.ttf']},
     install_requires=[
         "k-util",
         "numpy",
