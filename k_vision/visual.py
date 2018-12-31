@@ -87,22 +87,17 @@ def pixelate_region(image: np.array, regions: List[Region], blur_factor: float =
 
 def draw_region_mask(image: np.array, regions: List[Region], strength: float = 1.0):
     """ Apply a mask to the areas covered by the regions. """
-
-    image = image.astype(np.float)
-    pos_mask = np.zeros((image.shape[0], image.shape[1]), dtype=np.bool)
-    neg_mask = np.ones((image.shape[0], image.shape[1]), dtype=np.bool)
-
-    for r in regions:
-        safe_left, safe_right, _, _ = _get_safe_bounds(r.left, r.right, image.shape[1])
-        safe_top, safe_bottom, _, _ = _get_safe_bounds(r.top, r.bottom, image.shape[0])
-
-        pos_mask[safe_top:safe_bottom, safe_left:safe_right] = True
-        neg_mask[safe_top:safe_bottom, safe_left:safe_right] = False
-
+    dark_image = image.astype(np.float)
     fade_factor = 1.0 - (0.7 * strength)
-    image[neg_mask] *= fade_factor
-    image = image.astype(np.uint8)
-    return image
+    dark_image *= fade_factor
+    dark_image = dark_image.astype(np.uint8)
+
+    # Copy the regions onto the dark image.
+    for r in regions:
+        avatar = safe_extract_with_region(image, r)
+        dark_image = safe_implant_with_region(dark_image, avatar, r)
+
+    return dark_image
 
 
 # ======================================================================================================================
@@ -122,10 +117,11 @@ def draw_bar_segment(image, p_start: float, p_end: float, x: int, y: int, width:
     Starting point is the top left. """
 
     # Draw the bar.
-    p_width = max(0.05, p_end - p_start)
+    p_width = max(0.0, p_end - p_start)
     p_width = int(width * p_width)
-    p_x = int(x + p_start * width)
-    cv2.rectangle(image, (p_x, y), (p_x + p_width, y + height), color, thickness=-1)
+    if p_width > 0:
+        p_x = int(x + p_start * width)
+        cv2.rectangle(image, (p_x, y), (p_x + p_width, y + height), color, thickness=-1)
 
 
 # ===================================================================================================
