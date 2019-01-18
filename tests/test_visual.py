@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 
 from unittest import TestCase
+
+import cv2
 import numpy as np
-from k_util import Region
+from k_util import Region, pather
 
 from k_vision import visual
 
 
 class TestVisual(TestCase):
+
+    def setUp(self):
+        pather.create("output")
 
     # ======================================================================================================================
     # Colors.
@@ -97,3 +102,33 @@ class TestVisual(TestCase):
             implanted = visual.safe_implant_with_region(image, extracted, region)
             self.validate_image(extracted)
             self.validate_image(implanted)
+
+    # ======================================================================================================================
+    # Test Draw Grid.
+    # ======================================================================================================================
+
+    def test_draw_grid(self):
+        """ Draw the grid. """
+
+        n = 16
+
+        # Create n randomly colored images.
+        random_colors = visual.generate_colors(n)
+        images = [np.zeros((50, 50, 3), dtype=np.uint8) for _ in range(n)]
+        for i in range(n):
+            images[i][:, :] = random_colors[i]
+
+        image = visual.grid(images)
+        cv2.imwrite("output/grid_default.png", image)
+
+        image = visual.grid(images, n_rows=2)
+        cv2.imwrite("output/grid_rows.png", image)
+
+        image = visual.grid(images, n_columns=3)
+        cv2.imwrite("output/grid_cols.png", image)
+
+        image = visual.grid(images, image_size=(15, 15), inner_pad=0, outer_pad=30, bg_color=(30, 30, 30))
+        cv2.imwrite("output/grid_small.png", image)
+
+        image = visual.grid(images, n_rows=2, n_columns=2)
+        cv2.imwrite("output/grid_trunc.png", image)

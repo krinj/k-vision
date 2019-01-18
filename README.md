@@ -1,11 +1,12 @@
 # k-vision
-[![Build Status](https://travis-ci.com/krinj/k-vision.svg?branch=master)](https://travis-ci.com/krinj/k-vision) [![codecov](https://codecov.io/gh/krinj/k-vision/branch/master/graph/badge.svg)](https://codecov.io/gh/krinj/k-vision) ![Version](https://img.shields.io/badge/version-0.1.3-333333.svg)
+[![Build Status](https://travis-ci.com/krinj/k-vision.svg?branch=master)](https://travis-ci.com/krinj/k-vision) [![codecov](https://codecov.io/gh/krinj/k-vision/branch/master/graph/badge.svg)](https://codecov.io/gh/krinj/k-vision) ![Version](https://img.shields.io/badge/version-0.1.4-333333.svg)
 
 The tools in this package help with rendering and visualizing image and text data. A lot of this package is based on the region class in the [**k-util** package](https://github.com/krinj/k-util). The functions in this package are geared towards working with actual image data.
 
 * [Region Visualization](#region-visualization)
 * [Text](#text)
 * [Color Generator](#color-generator)
+* [Grid](#grid)
 
 ## Region Visualization
 
@@ -209,3 +210,68 @@ for i in range(n):
 ```
 
 ![generate_colors](images/generate_colors.jpg)
+
+## Grid
+
+You can use this to quickly render a collection of images into a grid. Say you have a list of images, and you want to group them all together into one image (to visualize a data batch or gallery, etc) - you can use this handy grid tool!
+
+#### Method Signature
+
+```python
+def grid(
+        images: List[np.ndarray],
+        n_columns: int=-1,
+        n_rows: int=-1,
+        image_size: (int, int)=None,
+        bg_color: (int, int, int)=(255, 255, 255),
+        inner_pad: int=5,
+        outer_pad: int=15
+):
+	pass
+```
+
+#### Examples
+
+Let's say, for example, we create a list of 16 images. We'll make each image a different color.
+
+```python
+n = 16
+
+# Create n randomly colored images.
+random_colors = visual.generate_colors(n)
+images = [np.zeros((50, 50, 3), dtype=np.uint8) for _ in range(n)]
+for i in range(n):
+	images[i][:, :] = random_colors[i]
+```
+
+Now we can use `grid` to visualize this into a single image.
+
+#### Default Grid
+
+```python
+image = visual.grid(images)
+```
+
+By default this will render it into a square shaped grid (or whatever is closest). The images will be resized to be the same size as whatever is the first image. Because there are 16 images, it fits nicely into a 4 x 4 square.
+
+![grid_default](images/grid_default.png)
+
+#### Set Rows and Columns
+
+```python
+image = visual.grid(images, n_rows=2)
+```
+
+We can set a hard limit for either the rows, or the columns. If both are set, the grid will be at that size and any excess images will not be drawn. Otherwise if one is left on default (`-1`) it will auto-scale.
+
+![grid_rows](images/grid_rows.png)
+
+#### Other Settings
+
+```python
+image = visual.grid(images, image_size=(15, 15), inner_pad=0, outer_pad=30, bg_color=(30, 30, 30))
+```
+
+You can also manually set the size, padding and background color.
+
+![grid_small](images/grid_small.png)

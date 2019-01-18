@@ -3,7 +3,7 @@
 """
 Library to do some cool visual stuff.
 """
-
+import math
 from typing import List
 import cv2
 import numpy as np
@@ -98,6 +98,75 @@ def draw_region_mask(image: np.array, regions: List[Region], strength: float = 1
         dark_image = safe_implant_with_region(dark_image, avatar, r)
 
     return dark_image
+
+
+# ===================================================================================================
+# Image Arrangement.
+# ===================================================================================================
+
+
+def grid(
+        images: List[np.ndarray],
+        n_columns: int=-1,
+        n_rows: int=-1,
+        image_size: (int, int)=None,
+        bg_color: (int, int, int)=(255, 255, 255),
+        inner_pad: int=5,
+        outer_pad: int=15
+):
+    """ Returns an image with each of the images in the sequence drawn in a grid.
+    It will resize each image to the image_size, but will use the size of
+    the first image if image_size is not provided.
+    You can specify the number of rows or columns to draw. If left on -1, it will auto-scale.
+    """
+
+    assert(len(images) > 0)
+
+    # Calculate each image size.
+    if image_size is None:
+        image_size = images[0].shape[:2]
+
+    template_width = image_size[1]
+    template_height = image_size[0]
+
+    # Calculate the number of rows and columns.
+    if n_rows <= 0 and n_columns <= 0:
+        # Make a perfect square of the grid.
+        n_rows = n_columns = math.ceil(math.sqrt(len(images)))
+
+    elif n_rows <= 0:
+        # Rows are specified, so find the columns.
+        n_rows = math.ceil(len(images) / n_columns)
+
+    elif n_columns <= 0:
+        # Columns are specified, so find the rows.
+        n_columns = math.ceil(len(images) / n_rows)
+
+    # Now calculate the canvas size.
+    width = 2 * outer_pad + (n_columns * (template_width + inner_pad)) - inner_pad
+    height = 2 * outer_pad + (n_rows * (template_height + inner_pad)) - inner_pad
+
+    # Create the canvas.
+    canvas = np.zeros((height, width, 3), dtype=np.uint8)
+    canvas[:, :] = bg_color
+
+    # Draw the items.
+    for i, image in enumerate(images):
+
+        if i == n_rows * n_columns:
+            # That's all we can fit.
+            break
+
+        row = i // n_columns
+        col = i % n_columns
+
+        resized_image = cv2.resize(image, image_size)
+        x = col * (template_width + inner_pad) + outer_pad
+        y = row * (template_height + inner_pad) + outer_pad
+
+        canvas[y:y+template_height, x:x+template_width] = resized_image
+
+    return canvas
 
 
 # ======================================================================================================================
