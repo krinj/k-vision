@@ -127,8 +127,17 @@ class TestVisual(TestCase):
         image = visual.grid(images, n_columns=3)
         cv2.imwrite("output/grid_cols.png", image)
 
-        image = visual.grid(images, image_size=(15, 15), inner_pad=0, outer_pad=30, bg_color=(30, 30, 30))
+        image = visual.grid(images, image_size=(15, 15),
+                            inner_x_pad=0, inner_y_pad=0,
+                            outer_pad=30,
+                            bg_color=(30, 30, 30))
         cv2.imwrite("output/grid_small.png", image)
+
+        image = visual.grid(images, image_size=(15, 15),
+                            inner_x_pad=10, inner_y_pad=0,
+                            outer_pad=15,
+                            bg_color=(30, 30, 30))
+        cv2.imwrite("output/grid_uneven.png", image)
 
         image = visual.grid(images, n_rows=2, n_columns=2)
         cv2.imwrite("output/grid_trunc.png", image)

@@ -1,5 +1,5 @@
 # k-vision
-[![Build Status](https://travis-ci.com/krinj/k-vision.svg?branch=master)](https://travis-ci.com/krinj/k-vision) [![codecov](https://codecov.io/gh/krinj/k-vision/branch/master/graph/badge.svg)](https://codecov.io/gh/krinj/k-vision) ![Version](https://img.shields.io/badge/version-0.1.5-333333.svg)
+[![Build Status](https://travis-ci.com/krinj/k-vision.svg?branch=master)](https://travis-ci.com/krinj/k-vision) [![codecov](https://codecov.io/gh/krinj/k-vision/branch/master/graph/badge.svg)](https://codecov.io/gh/krinj/k-vision) ![Version](https://img.shields.io/badge/version-0.1.6-333333.svg)
 
 The tools in this package help with rendering and visualizing image and text data. A lot of this package is based on the region class in the [**k-util** package](https://github.com/krinj/k-util). The functions in this package are geared towards working with actual image data.
 
@@ -224,7 +224,8 @@ def grid(
         n_rows: int=-1,
         image_size: (int, int)=None,
         bg_color: (int, int, int)=(255, 255, 255),
-        inner_pad: int=5,
+        inner_x_pad: int=5,
+        inner_y_pad: int=5,
         outer_pad: int=15
 ):
 	pass
@@ -269,7 +270,10 @@ We can set a hard limit for either the rows, or the columns. If both are set, th
 #### Other Settings
 
 ```python
-image = visual.grid(images, image_size=(15, 15), inner_pad=0, outer_pad=30, bg_color=(30, 30, 30))
+image = visual.grid(images, image_size=(15, 15),
+                            inner_x_pad=0, inner_y_pad=0,
+                            outer_pad=30,
+                            bg_color=(30, 30, 30))
 ```
 
 You can also manually set the size, padding and background color.

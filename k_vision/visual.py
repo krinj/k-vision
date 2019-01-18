@@ -111,7 +111,8 @@ def grid(
         n_rows: int=-1,
         image_size: (int, int)=None,
         bg_color: (int, int, int)=(255, 255, 255),
-        inner_pad: int=5,
+        inner_x_pad: int=5,
+        inner_y_pad: int=5,
         outer_pad: int=15
 ):
     """ Returns an image with each of the images in the sequence drawn in a grid.
@@ -143,8 +144,8 @@ def grid(
         n_columns = math.ceil(len(images) / n_rows)
 
     # Now calculate the canvas size.
-    width = 2 * outer_pad + (n_columns * (template_width + inner_pad)) - inner_pad
-    height = 2 * outer_pad + (n_rows * (template_height + inner_pad)) - inner_pad
+    width = 2 * outer_pad + (n_columns * (template_width + inner_x_pad)) - inner_x_pad
+    height = 2 * outer_pad + (n_rows * (template_height + inner_y_pad)) - inner_y_pad
 
     # Create the canvas.
     canvas = np.zeros((height, width, 3), dtype=np.uint8)
@@ -161,8 +162,8 @@ def grid(
         col = i % n_columns
 
         resized_image = cv2.resize(image, image_size)
-        x = col * (template_width + inner_pad) + outer_pad
-        y = row * (template_height + inner_pad) + outer_pad
+        x = col * (template_width + inner_x_pad) + outer_pad
+        y = row * (template_height + inner_y_pad) + outer_pad
 
         canvas[y:y+template_height, x:x+template_width] = resized_image
 
