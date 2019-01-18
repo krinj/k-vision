@@ -1,5 +1,5 @@
 # k-vision
-[![Build Status](https://travis-ci.com/krinj/k-vision.svg?branch=master)](https://travis-ci.com/krinj/k-vision) [![codecov](https://codecov.io/gh/krinj/k-vision/branch/master/graph/badge.svg)](https://codecov.io/gh/krinj/k-vision) ![Version](https://img.shields.io/badge/version-0.1.4-333333.svg)
+[![Build Status](https://travis-ci.com/krinj/k-vision.svg?branch=master)](https://travis-ci.com/krinj/k-vision) [![codecov](https://codecov.io/gh/krinj/k-vision/branch/master/graph/badge.svg)](https://codecov.io/gh/krinj/k-vision) ![Version](https://img.shields.io/badge/version-0.1.5-333333.svg)
 
 The tools in this package help with rendering and visualizing image and text data. A lot of this package is based on the region class in the [**k-util** package](https://github.com/krinj/k-util). The functions in this package are geared towards working with actual image data.
 
