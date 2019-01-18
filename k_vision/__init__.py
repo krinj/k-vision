@@ -20,6 +20,7 @@ from k_vision.visual import safe_extract
 from k_vision.visual import safe_implant
 from k_vision.visual import safe_extract_with_region
 from k_vision.visual import safe_implant_with_region
+from k_vision.visual import grid
 
 
 # Expose the Text functions.
