@@ -161,7 +161,7 @@ def grid(
         row = i // n_columns
         col = i % n_columns
 
-        resized_image = cv2.resize(image, image_size)
+        resized_image = cv2.resize(image, (template_width, template_height))
         x = col * (template_width + inner_x_pad) + outer_pad
         y = row * (template_height + inner_y_pad) + outer_pad
 
